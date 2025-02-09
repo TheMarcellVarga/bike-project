@@ -30,7 +30,7 @@ export default function Home() {
               </p>
               <Link
                 href="/bikes"
-                className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
+                className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
               >
                 Shop Bikes
                 <ArrowRight className="ml-2 h-6 w-6" />

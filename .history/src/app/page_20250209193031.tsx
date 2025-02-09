@@ -4,63 +4,59 @@ import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="space-y-24">
+    <div className="space-y-16">
       {/* Hero Section */}
-      <section className="relative h-[80vh] -mt-8">
+      <section className="relative h-[600px] -mt-8 flex items-center">
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-bike.jpg"
             alt="Mountain biker on a trail"
             fill
-            className="object-cover brightness-75"
+            className="object-cover brightness-50"
             priority
-            sizes="100vw"
-            quality={90}
           />
         </div>
-        <div className="relative z-10 h-full flex items-center">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl">
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-lg">
-                Conquer Every Trail
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 text-white drop-shadow-md">
-                Premium mountain bikes and gear for riders who demand the best.
-                Experience the thrill of the trail with our expert-curated selection.
-              </p>
-              <Link
-                href="/bikes"
-                className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-              >
-                Shop Bikes
-                <ArrowRight className="ml-2 h-6 w-6" />
-              </Link>
-            </div>
-          </div>
+        <div className="container mx-auto px-4 relative z-10 text-white">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            Conquer Every Trail
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-2xl">
+            Premium mountain bikes and gear for riders who demand the best.
+            Experience the thrill of the trail with our expert-curated
+            selection.
+          </p>
+          <Link
+            href="/bikes"
+            className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+          >
+            Shop Bikes
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
         </div>
       </section>
 
       {/* Featured Categories */}
       <section className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-12 text-center">Featured Categories</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <h2 className="text-3xl font-bold mb-8">Featured Categories</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {categories.map((category) => (
             <Link
               key={category.name}
               href={category.href}
-              className="group relative h-80 overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="group relative h-64 overflow-hidden rounded-lg"
             >
               <Image
                 src={category.image}
                 alt={category.name}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover transition-transform group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 p-8">
-                <h3 className="text-2xl font-bold text-white mb-3">{category.name}</h3>
-                <p className="text-gray-200 text-lg">{category.description}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-0 left-0 p-6">
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  {category.name}
+                </h3>
+                <p className="text-gray-200">{category.description}</p>
               </div>
             </Link>
           ))}
@@ -68,17 +64,19 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="bg-gray-50 py-24">
+      <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-16 text-center">Why Choose Trail Blazer</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <h2 className="text-3xl font-bold mb-12 text-center">
+            Why Choose Trail Blazer
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature) => (
-              <div key={feature.title} className="text-center group">
-                <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 transform group-hover:scale-110 transition-transform">
+              <div key={feature.title} className="text-center">
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
-                <p className="text-gray-600 text-lg leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
