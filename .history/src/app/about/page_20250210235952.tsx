@@ -21,7 +21,7 @@ const values = [
   {
     icon: <Leaf className="w-8 h-8 text-green-600" />,
     title: 'Sustainability',
-    description: "We're committed to reducing our environmental impact and promoting sustainable riding practices."
+    description: 'We're committed to reducing our environmental impact and promoting sustainable riding practices.'
   },
 ]
 
