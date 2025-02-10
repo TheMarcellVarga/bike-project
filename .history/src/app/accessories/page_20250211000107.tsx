@@ -1,134 +1,114 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import Image from "next/image";
-import { Search, Filter } from "lucide-react";
+import { useState } from 'react'
+import Image from 'next/image'
+import { Search, Filter } from 'lucide-react'
 
-const parts = [
+const accessories = [
   {
     id: 1,
-    name: "Fox 36 Factory Fork",
-    price: 999.99,
-    category: "Suspension",
-    subCategory: "Forks",
-    image: "/products/parts-1.jpg",
-    description: "High-performance trail fork with GRIP2 damper",
+    name: 'Pro Trail Helmet',
+    price: 179.99,
+    category: 'Protection',
+    subCategory: 'Helmets',
+    image: '/products/accessory-1.jpg',
+    description: 'Advanced protection with MIPS technology and optimal ventilation',
     specs: {
-      travel: "160mm",
-      weight: "1.9 kg",
-      axle: "15x110mm",
-    },
+      weight: '380g',
+      certification: 'CE/CPSC',
+      ventilation: '20 vents',
+    }
   },
   {
     id: 2,
-    name: "SRAM XX1 Eagle Drivetrain",
-    price: 799.99,
-    category: "Drivetrain",
-    subCategory: "Groupsets",
-    image: "/products/parts-2.jpg",
-    description: "Premium 12-speed drivetrain system",
+    name: 'Trail Rider Pack',
+    price: 129.99,
+    category: 'Storage',
+    subCategory: 'Backpacks',
+    image: '/products/accessory-2.jpg',
+    description: 'Hydration-compatible pack with tool storage and armor carry',
     specs: {
-      speeds: "12-speed",
-      weight: "1.5 kg",
-      material: "Carbon/Alloy",
-    },
+      capacity: '20L',
+      waterproof: 'Yes',
+      hydration: '3L Compatible',
+    }
   },
   {
     id: 3,
-    name: "RockShox Super Deluxe Ultimate",
-    price: 599.99,
-    category: "Suspension",
-    subCategory: "Rear Shocks",
-    image: "/products/parts-1.jpg",
-    description: "Advanced rear shock for trail and enduro",
+    name: 'MTB Tech Jersey',
+    price: 69.99,
+    category: 'Clothing',
+    subCategory: 'Jerseys',
+    image: '/products/accessory-1.jpg',
+    description: 'Moisture-wicking fabric with UV protection and ventilated design',
     specs: {
-      travel: "210x55mm",
-      weight: "0.4 kg",
-      damping: "Hydraulic",
-    },
+      material: 'Polyester Blend',
+      fit: 'Athletic',
+      protection: 'UPF 50+',
+    }
   },
   {
     id: 4,
-    name: "Shimano XTR M9100 Brakes",
-    price: 449.99,
-    category: "Brakes",
-    subCategory: "Disc Brakes",
-    image: "/products/parts-2.jpg",
-    description: "Race-proven hydraulic disc brakes",
+    name: 'Pro Tool Kit',
+    price: 149.99,
+    category: 'Maintenance',
+    subCategory: 'Tools',
+    image: '/products/accessory-2.jpg',
+    description: 'Complete toolkit for trail-side repairs and maintenance',
     specs: {
-      type: "Hydraulic",
-      weight: "0.4 kg",
-      rotor: "180mm",
-    },
+      pieces: '23 tools',
+      case: 'Hard Shell',
+      weight: '1.2 kg',
+    }
   },
-];
+]
 
-const categories = [
-  "All",
-  "Suspension",
-  "Drivetrain",
-  "Brakes",
-  "Wheels",
-  "Cockpit",
-];
-const priceRanges = ["All", "$0-$250", "$250-$500", "$500-$750", "$750+"];
-const sortOptions = [
-  "Featured",
-  "Price: Low to High",
-  "Price: High to Low",
-  "Name: A-Z",
-];
+const categories = ['All', 'Protection', 'Storage', 'Clothing', 'Maintenance', 'Electronics']
+const priceRanges = ['All', '$0-$50', '$50-$100', '$100-$150', '$150+']
+const sortOptions = ['Featured', 'Price: Low to High', 'Price: High to Low', 'Name: A-Z']
 
-export default function PartsPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedPriceRange, setSelectedPriceRange] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("Featured");
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+export default function AccessoriesPage() {
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedPriceRange, setSelectedPriceRange] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('Featured')
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
-  const filteredParts = parts
-    .filter((part) => {
-      const matchesCategory =
-        selectedCategory === "All" || part.category === selectedCategory;
-      const matchesSearch =
-        part.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        part.description.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredAccessories = accessories.filter(accessory => {
+    const matchesCategory = selectedCategory === 'All' || accessory.category === selectedCategory
+    const matchesSearch = accessory.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         accessory.description.toLowerCase().includes(searchQuery.toLowerCase())
+    
+    let matchesPrice = true
+    if (selectedPriceRange !== 'All') {
+      const price = accessory.price
+      if (selectedPriceRange === '$0-$50') matchesPrice = price <= 50
+      else if (selectedPriceRange === '$50-$100') matchesPrice = price > 50 && price <= 100
+      else if (selectedPriceRange === '$100-$150') matchesPrice = price > 100 && price <= 150
+      else if (selectedPriceRange === '$150+') matchesPrice = price > 150
+    }
 
-      let matchesPrice = true;
-      if (selectedPriceRange !== "All") {
-        const price = part.price;
-        if (selectedPriceRange === "$0-$250") matchesPrice = price <= 250;
-        else if (selectedPriceRange === "$250-$500")
-          matchesPrice = price > 250 && price <= 500;
-        else if (selectedPriceRange === "$500-$750")
-          matchesPrice = price > 500 && price <= 750;
-        else if (selectedPriceRange === "$750+") matchesPrice = price > 750;
-      }
-
-      return matchesCategory && matchesSearch && matchesPrice;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "Price: Low to High":
-          return a.price - b.price;
-        case "Price: High to Low":
-          return b.price - a.price;
-        case "Name: A-Z":
-          return a.name.localeCompare(b.name);
-        default:
-          return 0;
-      }
-    });
+    return matchesCategory && matchesSearch && matchesPrice
+  }).sort((a, b) => {
+    switch (sortBy) {
+      case 'Price: Low to High':
+        return a.price - b.price
+      case 'Price: High to Low':
+        return b.price - a.price
+      case 'Name: A-Z':
+        return a.name.localeCompare(b.name)
+      default:
+        return 0
+    }
+  })
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-green-800 text-white py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Bike Parts & Components</h1>
-          <p className="text-lg text-green-100">
-            Premium components to upgrade your ride
-          </p>
+          <h1 className="text-4xl font-bold mb-4">Gear & Accessories</h1>
+          <p className="text-lg text-green-100">Essential equipment for your mountain biking adventures</p>
         </div>
       </div>
 
@@ -139,7 +119,7 @@ export default function PartsPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <input
               type="text"
-              placeholder="Search parts..."
+              placeholder="Search accessories..."
               className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -151,9 +131,7 @@ export default function PartsPage() {
             className="px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
           >
             {sortOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
+              <option key={option} value={option}>{option}</option>
             ))}
           </select>
           <button
@@ -167,11 +145,7 @@ export default function PartsPage() {
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filters - Desktop */}
-          <div
-            className={`md:w-64 space-y-6 ${
-              isFilterOpen ? "block" : "hidden md:block"
-            }`}
-          >
+          <div className={`md:w-64 space-y-6 ${isFilterOpen ? 'block' : 'hidden md:block'}`}>
             <div>
               <h3 className="text-lg font-semibold mb-3">Category</h3>
               <div className="space-y-2">
@@ -212,15 +186,15 @@ export default function PartsPage() {
           {/* Product Grid */}
           <div className="flex-grow">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredParts.map((part) => (
+              {filteredAccessories.map((accessory) => (
                 <div
-                  key={part.id}
+                  key={accessory.id}
                   className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
                 >
                   <div className="relative h-48">
                     <Image
-                      src={part.image}
-                      alt={part.name}
+                      src={accessory.image}
+                      alt={accessory.name}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -229,22 +203,18 @@ export default function PartsPage() {
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <h3 className="text-xl font-bold">{part.name}</h3>
-                        <p className="text-sm text-gray-500">
-                          {part.subCategory}
-                        </p>
+                        <h3 className="text-xl font-bold">{accessory.name}</h3>
+                        <p className="text-sm text-gray-500">{accessory.subCategory}</p>
                       </div>
                       <span className="text-lg font-semibold text-green-600">
-                        ${part.price.toLocaleString()}
+                        ${accessory.price.toLocaleString()}
                       </span>
                     </div>
-                    <p className="text-gray-600 mb-4">{part.description}</p>
+                    <p className="text-gray-600 mb-4">{accessory.description}</p>
                     <div className="space-y-2">
-                      {Object.entries(part.specs).map(([key, value]) => (
+                      {Object.entries(accessory.specs).map(([key, value]) => (
                         <div key={key} className="flex justify-between text-sm">
-                          <span className="text-gray-500 capitalize">
-                            {key}
-                          </span>
+                          <span className="text-gray-500 capitalize">{key}</span>
                           <span className="font-medium">{value}</span>
                         </div>
                       ))}
@@ -260,5 +230,5 @@ export default function PartsPage() {
         </div>
       </div>
     </div>
-  );
-}
+  )
+} 
