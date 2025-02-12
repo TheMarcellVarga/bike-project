@@ -29,10 +29,13 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl">
               <div className="mb-4">
-                <span className="text-green-500 font-bold text-xl uppercase tracking-wider">Welcome to the extreme</span>
+                <span className="text-green-500 font-bold text-xl uppercase tracking-wider">
+                  Welcome to the extreme
+                </span>
               </div>
               <h1 className="text-6xl md:text-8xl font-black mb-6 text-white leading-none tracking-tight">
-                CONQUER<br />
+                CONQUER
+                <br />
                 <span className="text-green-500">EVERY TRAIL</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-200 font-medium max-w-2xl">
@@ -101,11 +104,11 @@ export default function Home() {
             {features.map((feature) => (
               <div key={feature.title} className="text-center group relative">
                 <div className="bg-green-500/10 w-24 h-24 rounded-none rotate-45 flex items-center justify-center mx-auto mb-8 transform group-hover:scale-110 group-hover:bg-green-500/20 transition-all">
-                  <div className="-rotate-45">
-                    {feature.icon}
-                  </div>
+                  <div className="-rotate-45">{feature.icon}</div>
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-white uppercase">{feature.title}</h3>
+                <h3 className="text-2xl font-bold mb-4 text-white uppercase">
+                  {feature.title}
+                </h3>
                 <p className="text-gray-400 text-lg leading-relaxed">
                   {feature.description}
                 </p>
