@@ -4,51 +4,50 @@ import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="w-full">
+    <div className="space-y-16">
       {/* Hero Section */}
-      <section className="relative h-screen w-full -mt-8 overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative h-screen -mt-8">
+        <div className="absolute inset-0 z-0">
           <Image
             src="/hero-bike.jpg"
             alt="Mountain biker on a trail"
             fill
-            className="object-cover object-center"
+            className="object-cover brightness-90"
             priority
             sizes="100vw"
             quality={100}
           />
+          {/* Dynamic overlay with diagonal cuts */}
+          <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-transparent to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/90 to-transparent" />
+          {/* Diagonal accent line */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -right-1/4 top-1/4 w-1/2 h-[2px] bg-green-500 rotate-45 transform opacity-60" />
+          </div>
         </div>
         <div className="relative z-10 h-full flex items-center">
-          <div className="container mx-auto px-8">
-            <div className="max-w-3xl">
-              <span className="text-[#00FF47] font-bold text-xl uppercase tracking-wider">
-                Welcome to the extreme
-              </span>
-              <h1 className="text-[120px] font-black text-white leading-[0.9] tracking-tight mt-6">
-                CONQUER
-                <br />
-                <span className="text-[#00FF47]">EVERY TRAIL</span>
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl">
+              <div className="mb-4">
+                <span className="text-green-500 font-bold text-xl uppercase tracking-wider">Welcome to the extreme</span>
+              </div>
+              <h1 className="text-6xl md:text-8xl font-black mb-6 text-white leading-none tracking-tight">
+                CONQUER<br />
+                <span className="text-green-500">EVERY TRAIL</span>
               </h1>
-              <p className="text-2xl text-white font-medium max-w-2xl mt-8">
+              <p className="text-xl md:text-2xl mb-8 text-gray-200 font-medium max-w-2xl">
                 Premium mountain bikes and gear for riders who push the limits.
                 Experience pure adrenaline with our expert-curated selection.
               </p>
-              <div className="mt-12">
-                <Link
-                  href="/bikes"
-                  className="inline-flex items-center bg-[#00FF47] text-black px-12 py-5 font-bold text-xl hover:bg-[#00FF47]/90 transition-colors"
-                >
-                  SHOP BIKES
-                  <ArrowRight className="ml-3 h-6 w-6" />
-                </Link>
-              </div>
+              <Link
+                href="/bikes"
+                className="group inline-flex items-center bg-green-600 hover:bg-green-500 text-white px-8 py-4 rounded-none skew-x-6 font-bold text-lg transform transition-all hover:scale-105 hover:shadow-[0_0_20px_rgba(34,197,94,0.5)]"
+              >
+                SHOP BIKES
+                <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
-        </div>
-        {/* Diagonal Lines */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-[10%] -right-[10%] w-[120%] h-[120%] border-t-2 border-r-2 border-[#00FF47] transform -skew-y-12" />
-          <div className="absolute -bottom-[10%] -left-[10%] w-[120%] h-[120%] border-b-2 border-l-2 border-[#00FF47] transform skew-y-12" />
         </div>
       </section>
 
