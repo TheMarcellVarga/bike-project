@@ -4,54 +4,66 @@ import { ArrowRight } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="space-y-24">
+    <div className="w-full">
       {/* Hero Section */}
-      <section className="relative h-[80vh] -mt-8">
-        <div className="absolute inset-0 z-0">
+      <section className="relative h-screen w-full -mt-8 overflow-hidden">
+        <div className="absolute inset-0">
           <Image
             src="/hero-bike.jpg"
             alt="Mountain biker on a trail"
             fill
-            className="object-cover brightness-75"
+            className="object-cover object-center"
             priority
             sizes="100vw"
-            quality={90}
+            quality={100}
           />
         </div>
         <div className="relative z-10 h-full flex items-center">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-8">
             <div className="max-w-3xl">
-              <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-lg">
-                Conquer Every Trail
+              <span className="text-[#00FF47] font-bold text-xl uppercase tracking-wider">
+                Welcome to the extreme
+              </span>
+              <h1 className="text-[120px] font-black text-white leading-[0.9] tracking-tight mt-6">
+                CONQUER
+                <br />
+                <span className="text-[#00FF47]">EVERY TRAIL</span>
               </h1>
-              <p className="text-xl md:text-2xl mb-8 text-white drop-shadow-md">
-                Premium mountain bikes and gear for riders who demand the best.
-                Experience the thrill of the trail with our expert-curated
-                selection.
+              <p className="text-2xl text-white font-medium max-w-2xl mt-8">
+                Premium mountain bikes and gear for riders who push the limits.
+                Experience pure adrenaline with our expert-curated selection.
               </p>
-              <Link
-                href="/bikes"
-                className="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all"
-              >
-                Shop Bikes
-                <ArrowRight className="ml-2 h-6 w-6" />
-              </Link>
+              <div className="mt-12">
+                <Link
+                  href="/bikes"
+                  className="inline-flex items-center bg-[#00FF47] text-black px-12 py-5 font-bold text-xl hover:bg-[#00FF47]/90 transition-colors"
+                >
+                  SHOP BIKES
+                  <ArrowRight className="ml-3 h-6 w-6" />
+                </Link>
+              </div>
             </div>
           </div>
+        </div>
+        {/* Diagonal Lines */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-[10%] -right-[10%] w-[120%] h-[120%] border-t-2 border-r-2 border-[#00FF47] transform -skew-y-12" />
+          <div className="absolute -bottom-[10%] -left-[10%] w-[120%] h-[120%] border-b-2 border-l-2 border-[#00FF47] transform skew-y-12" />
         </div>
       </section>
 
       {/* Featured Categories */}
-      <section className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold mb-12 text-center">
+      <section className="container mx-auto px-4 relative">
+        <div className="absolute left-0 top-0 w-1 h-16 bg-green-500" />
+        <h2 className="text-4xl md:text-5xl font-black mb-12 pl-6 uppercase">
           Featured Categories
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {categories.map((category) => (
             <Link
               key={category.name}
               href={category.href}
-              className="group relative h-80 overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="group relative h-96 overflow-hidden transform hover:scale-[1.02] transition-all duration-300"
             >
               <Image
                 src={category.image}
@@ -60,12 +72,16 @@ export default function Home() {
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+              {/* Diagonal accent line */}
+              <div className="absolute bottom-0 left-0 w-full h-[2px] bg-green-500 transform -rotate-6 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
               <div className="absolute bottom-0 left-0 p-8">
-                <h3 className="text-2xl font-bold text-white mb-3">
+                <h3 className="text-3xl font-bold text-white mb-3 uppercase">
                   {category.name}
                 </h3>
-                <p className="text-gray-200 text-lg">{category.description}</p>
+                <p className="text-gray-300 text-lg font-medium transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                  {category.description}
+                </p>
               </div>
             </Link>
           ))}
@@ -73,19 +89,25 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="bg-gray-50 py-24">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-16 text-center">
+      <section className="bg-black py-24 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-1/4 w-1/2 h-[1px] bg-green-500/30 -rotate-45" />
+          <div className="absolute bottom-0 right-1/4 w-1/2 h-[1px] bg-green-500/30 -rotate-45" />
+        </div>
+        <div className="container mx-auto px-4 relative">
+          <h2 className="text-4xl md:text-5xl font-black mb-16 text-center text-white uppercase">
             Why Choose Trail Blazer
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {features.map((feature) => (
-              <div key={feature.title} className="text-center group">
-                <div className="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 transform group-hover:scale-110 transition-transform">
-                  {feature.icon}
+              <div key={feature.title} className="text-center group relative">
+                <div className="bg-green-500/10 w-24 h-24 rounded-none rotate-45 flex items-center justify-center mx-auto mb-8 transform group-hover:scale-110 group-hover:bg-green-500/20 transition-all">
+                  <div className="-rotate-45">
+                    {feature.icon}
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">{feature.title}</h3>
-                <p className="text-gray-600 text-lg leading-relaxed">
+                <h3 className="text-2xl font-bold mb-4 text-white uppercase">{feature.title}</h3>
+                <p className="text-gray-400 text-lg leading-relaxed">
                   {feature.description}
                 </p>
               </div>
