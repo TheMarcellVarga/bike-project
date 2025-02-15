@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Gear, Settings, Disc, Weight, Wheel, Info } from "lucide-react";
 
 const bikes = [
   {
@@ -15,7 +15,11 @@ const bikes = [
     specs: {
       frame: "Carbon Fiber",
       suspension: "150mm Travel",
-      groupset: "SRAM GX Eagle",
+      groupset: "SRAM GX Eagle 12-speed",
+      brakes: "Hydraulic Disc 203mm",
+      wheelSize: "29\"",
+      weight: "13.2 kg",
+      material: "Carbon Fiber",
     },
   },
   {
@@ -28,7 +32,11 @@ const bikes = [
     specs: {
       frame: "Aluminum Alloy",
       suspension: "170mm Travel",
-      groupset: "Shimano XT",
+      groupset: "Shimano XT 12-speed",
+      brakes: "Hydraulic Disc 203mm",
+      wheelSize: "27.5\"",
+      weight: "14.5 kg",
+      material: "Aluminum Alloy",
     },
   },
   {
@@ -41,7 +49,11 @@ const bikes = [
     specs: {
       frame: "Carbon Fiber",
       suspension: "100mm Travel",
-      groupset: "SRAM NX",
+      groupset: "SRAM NX 11-speed",
+      brakes: "Hydraulic Disc 180mm",
+      wheelSize: "29\"",
+      weight: "12.8 kg",
+      material: "Carbon Fiber",
     },
   },
   {
@@ -54,7 +66,11 @@ const bikes = [
     specs: {
       frame: "Carbon Fiber",
       suspension: "200mm Travel",
-      groupset: "Shimano Saint",
+      groupset: "Shimano Saint 12-speed",
+      brakes: "Hydraulic Disc 203mm",
+      wheelSize: "27.5\"",
+      weight: "15.1 kg",
+      material: "Carbon Fiber",
     },
   },
 ];
@@ -193,21 +209,39 @@ export default function BikesPage() {
                     </div>
                     <p className="text-gray-600 mb-4">{bike.description}</p>
                     <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Frame</span>
-                        <span className="font-medium">{bike.specs.frame}</span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Gear className="w-4 h-4 text-green-600" />
+                        <div className="flex items-center gap-1 group">
+                          <span className="text-gray-500">Drivetrain</span>
+                          <div className="relative">
+                            <Info className="w-3 h-3 text-gray-400 cursor-help" />
+                            <div className="absolute hidden group-hover:block bg-gray-800 text-white p-2 rounded-lg text-xs w-48 bottom-full left-1/2 -translate-x-1/2">
+                              The complete set of components including shifters, derailleurs, 
+                              and cassette that make up the bike's gearing system
+                            </div>
+                          </div>
+                        </div>
+                        <span className="font-medium">{bike.specs.groupset}</span>
                       </div>
-                      <div className="flex justify-between text-sm">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Settings className="w-4 h-4 text-green-600" />
                         <span className="text-gray-500">Suspension</span>
-                        <span className="font-medium">
-                          {bike.specs.suspension}
-                        </span>
+                        <span className="font-medium">{bike.specs.suspension}</span>
                       </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Groupset</span>
-                        <span className="font-medium">
-                          {bike.specs.groupset}
-                        </span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Disc className="w-4 h-4 text-green-600" />
+                        <span className="text-gray-500">Brakes</span>
+                        <span className="font-medium">{bike.specs.brakes}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Weight className="w-4 h-4 text-green-600" />
+                        <span className="text-gray-500">Weight</span>
+                        <span className="font-medium">{bike.specs.weight}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <Wheel className="w-4 h-4 text-green-600" />
+                        <span className="text-gray-500">Wheel Size</span>
+                        <span className="font-medium">{bike.specs.wheelSize}</span>
                       </div>
                     </div>
                     <button className="w-full mt-6 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
