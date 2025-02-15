@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Search, Filter, Gear, Settings, Disc, Weight, Wheel, Info } from "lucide-react";
+import { Search, Filter, Cog, Settings, Disc, Weight, Circle, Info } from "lucide-react";
 
 const bikes = [
   {
@@ -210,7 +210,7 @@ export default function BikesPage() {
                     <p className="text-gray-600 mb-4">{bike.description}</p>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 text-sm">
-                        <Gear className="w-4 h-4 text-green-600" />
+                        <Cog className="w-4 h-4 text-green-600" />
                         <div className="flex items-center gap-1 group">
                           <span className="text-gray-500">Drivetrain</span>
                           <div className="relative">
@@ -239,7 +239,7 @@ export default function BikesPage() {
                         <span className="font-medium">{bike.specs.weight}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
-                        <Wheel className="w-4 h-4 text-green-600" />
+                        <Circle className="w-4 h-4 text-green-600" />
                         <span className="text-gray-500">Wheel Size</span>
                         <span className="font-medium">{bike.specs.wheelSize}</span>
                       </div>
