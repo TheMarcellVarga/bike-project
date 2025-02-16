@@ -209,38 +209,52 @@ export default function BikesPage() {
                     </div>
                     <p className="text-gray-600 mb-4">{bike.description}</p>
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm">
-                        <Cog className="w-4 h-4 text-green-600" />
-                        <div className="flex items-center gap-1 group">
-                          <span className="text-gray-500">Drivetrain</span>
-                          <div className="relative">
-                            <Info className="w-3 h-3 text-gray-400 cursor-help" />
-                            <div className="absolute hidden group-hover:block bg-gray-800 text-white p-2 rounded-lg text-xs w-48 bottom-full left-1/2 -translate-x-1/2">
-                              The complete set of components including shifters, derailleurs, 
-                              and cassette that make up the bike's gearing system
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <Cog className="w-4 h-4 text-green-600" />
+                          <div className="flex items-center gap-1 group">
+                            <span>Drivetrain</span>
+                            <div className="relative">
+                              <Info className="w-3 h-3 text-gray-400 cursor-help" />
+                              <div className="absolute hidden group-hover:block bg-gray-800 text-white p-2 rounded-lg text-xs w-48 bottom-full left-1/2 -translate-x-1/2">
+                                The complete set of components including shifters, derailleurs, 
+                                and cassette that make up the bike's gearing system
+                              </div>
                             </div>
                           </div>
                         </div>
                         <span className="font-medium">{bike.specs.groupset}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Settings className="w-4 h-4 text-green-600" />
-                        <span className="text-gray-500">Suspension</span>
+
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <Settings className="w-4 h-4 text-green-600" />
+                          <span>Suspension</span>
+                        </div>
                         <span className="font-medium">{bike.specs.suspension}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Disc className="w-4 h-4 text-green-600" />
-                        <span className="text-gray-500">Brakes</span>
+
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <Disc className="w-4 h-4 text-green-600" />
+                          <span>Brakes</span>
+                        </div>
                         <span className="font-medium">{bike.specs.brakes}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Weight className="w-4 h-4 text-green-600" />
-                        <span className="text-gray-500">Weight</span>
+
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <Weight className="w-4 h-4 text-green-600" />
+                          <span>Weight</span>
+                        </div>
                         <span className="font-medium">{bike.specs.weight}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-sm">
-                        <Circle className="w-4 h-4 text-green-600" />
-                        <span className="text-gray-500">Wheel Size</span>
+
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2 text-gray-500">
+                          <Circle className="w-4 h-4 text-green-600" />
+                          <span>Wheel Size</span>
+                        </div>
                         <span className="font-medium">{bike.specs.wheelSize}</span>
                       </div>
                     </div>
