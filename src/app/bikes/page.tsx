@@ -245,7 +245,7 @@ export default function BikesPage() {
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2 text-gray-500">
                           <Weight className="w-4 h-4 text-green-600" />
-                          <span>Weight</span>
+                          <span>Weight as</span>
                         </div>
                         <span className="font-medium">{bike.specs.weight}</span>
                       </div>
