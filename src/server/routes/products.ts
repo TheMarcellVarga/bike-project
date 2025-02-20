@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
@@ -44,7 +44,7 @@ interface CreateProductBody {
   categoryId: string;
   stock: number;
   images?: string[];
-  specs?: Record<string, unknown>;
+  specs?: Prisma.InputJsonValue;
 }
 
 // Create new product
@@ -85,7 +85,7 @@ router.post(
   }
 );
 
-interface UpdateProductBody extends Partial<CreateProductBody> {}
+type UpdateProductInput = Prisma.ProductUpdateInput;
 
 // Update product
 router.put(
@@ -96,16 +96,25 @@ router.put(
     body('price').optional().isFloat({ min: 0 }),
     body('stock').optional().isInt({ min: 0 }),
   ],
-  async (req: Request<{ id: string }, {}, UpdateProductBody>, res: Response) => {
+  async (req: Request<{ id: string }, {}, Partial<UpdateProductInput>>, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     try {
+      const updateData: UpdateProductInput = {
+        name: req.body.name,
+        description: req.body.description,
+        price: req.body.price,
+        stock: req.body.stock,
+        images: req.body.images,
+        specs: req.body.specs,
+      };
+
       const product = await prisma.product.update({
         where: { id: req.params.id },
-        data: req.body,
+        data: updateData,
         include: {
           category: true,
         },

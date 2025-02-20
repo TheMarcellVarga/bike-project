@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma, OrderStatus } from '@prisma/client';
 import { body, validationResult } from 'express-validator';
 
 const router = express.Router();
@@ -105,11 +105,15 @@ router.post(
   }
 );
 
+interface UpdateOrderStatusBody {
+  status: OrderStatus;
+}
+
 // Update order status
 router.patch(
   '/:id/status',
-  [body('status').isIn(['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED'])],
-  async (req: Request<{ id: string }, {}, { status: string }>, res: Response) => {
+  [body('status').isIn(Object.values(OrderStatus))],
+  async (req: Request<{ id: string }, {}, UpdateOrderStatusBody>, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
