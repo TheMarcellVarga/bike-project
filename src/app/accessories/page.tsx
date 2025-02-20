@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Search, Filter } from "lucide-react";
+import { useCartStore } from "@/lib/store/cartStore";
 
 const accessories = [
   {
@@ -87,6 +88,7 @@ export default function AccessoriesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("Featured");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { addItem } = useCartStore();
 
   const filteredAccessories = accessories
     .filter((accessory) => {
@@ -253,7 +255,15 @@ export default function AccessoriesPage() {
                         </div>
                       ))}
                     </div>
-                    <button className="w-full mt-6 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors">
+                    <button 
+                      onClick={() => addItem({
+                        id: accessory.id.toString(),
+                        name: accessory.name,
+                        price: accessory.price,
+                        image: accessory.image
+                      })}
+                      className="w-full mt-6 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
+                    >
                       Add to Cart
                     </button>
                   </div>

@@ -3,9 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ShoppingCart, Menu, X } from "lucide-react";
+import { useCartStore } from "@/lib/store/cartStore";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { items } = useCartStore();
+  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <header className="sticky top-0 inset-x-0 bg-green-800 text-white shadow-lg z-50">
@@ -35,8 +38,13 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/cart" className="hover:text-green-300">
+            <Link href="/cart" className="hover:text-green-300 relative">
               <ShoppingCart className="h-6 w-6" />
+              {itemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {itemCount}
+                </span>
+              )}
             </Link>
             <Link href="/login" className="hover:text-green-300">
               Login
@@ -72,8 +80,13 @@ export default function Header() {
               <Link href="/about" className="hover:text-green-300">
                 About
               </Link>
-              <Link href="/cart" className="hover:text-green-300">
+              <Link href="/cart" className="hover:text-green-300 flex items-center gap-2">
                 Cart
+                {itemCount > 0 && (
+                  <span className="bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {itemCount}
+                  </span>
+                )}
               </Link>
               <Link href="/login" className="hover:text-green-300">
                 Login
