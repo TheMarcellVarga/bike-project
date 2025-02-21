@@ -1,12 +1,12 @@
-import express, { Request, Response } from 'express';
-import { PrismaClient, Prisma } from '@prisma/client';
-import { body, validationResult } from 'express-validator';
+const express = require('express');
+const { PrismaClient, Prisma } = require('@prisma/client');
+const { body, validationResult } = require('express-validator');
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
 // Get all products
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', async (_req, res) => {
   try {
     const products = await prisma.product.findMany({
       include: {
@@ -20,7 +20,7 @@ router.get('/', async (_req: Request, res: Response) => {
 });
 
 // Get product by ID
-router.get('/:id', async (req: Request<{ id: string }>, res: Response) => {
+router.get('/:id', async (req, res) => {
   try {
     const product = await prisma.product.findUnique({
       where: { id: req.params.id },
@@ -37,16 +37,6 @@ router.get('/:id', async (req: Request<{ id: string }>, res: Response) => {
   }
 });
 
-interface CreateProductBody {
-  name: string;
-  description: string;
-  price: number;
-  categoryId: string;
-  stock: number;
-  images?: string[];
-  specs?: Prisma.InputJsonValue;
-}
-
 // Create new product
 router.post(
   '/',
@@ -57,7 +47,7 @@ router.post(
     body('categoryId').notEmpty(),
     body('stock').isInt({ min: 0 }),
   ],
-  async (req: Request<{}, {}, CreateProductBody>, res: Response) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -85,8 +75,6 @@ router.post(
   }
 );
 
-type UpdateProductInput = Prisma.ProductUpdateInput;
-
 // Update product
 router.put(
   '/:id',
@@ -96,14 +84,14 @@ router.put(
     body('price').optional().isFloat({ min: 0 }),
     body('stock').optional().isInt({ min: 0 }),
   ],
-  async (req: Request<{ id: string }, {}, Partial<UpdateProductInput>>, res: Response) => {
+  async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
     try {
-      const updateData: UpdateProductInput = {
+      const updateData = {
         name: req.body.name,
         description: req.body.description,
         price: req.body.price,
@@ -127,7 +115,7 @@ router.put(
 );
 
 // Delete product
-router.delete('/:id', async (req: Request<{ id: string }>, res: Response) => {
+router.delete('/:id', async (req, res) => {
   try {
     await prisma.product.delete({
       where: { id: req.params.id },
@@ -138,4 +126,4 @@ router.delete('/:id', async (req: Request<{ id: string }>, res: Response) => {
   }
 });
 
-export default router; 
+module.exports = router; 

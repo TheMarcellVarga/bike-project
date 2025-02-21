@@ -1,7 +1,9 @@
-import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { body, validationResult } from 'express-validator';
-import bcrypt from 'bcryptjs';
+const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+const { body, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { auth } = require('../middleware/auth');
 
 const router = express.Router();
 const prisma = new PrismaClient();
@@ -17,6 +19,12 @@ interface LoginUserBody {
   password: string;
 }
 
+const generateToken = (userId: string): string => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET!, {
+    expiresIn: '7d',
+  });
+};
+
 // Register new user
 router.post(
   '/register',
@@ -25,7 +33,7 @@ router.post(
     body('email').isEmail(),
     body('password').isLength({ min: 6 }),
   ],
-  async (req: Request<{}, {}, RegisterUserBody>, res: Response) => {
+  async (req: any, res: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -57,8 +65,14 @@ router.post(
         },
       });
 
-      res.status(201).json(user);
+      const token = generateToken(user.id);
+
+      res.status(201).json({
+        user,
+        token,
+      });
     } catch (error) {
+      console.error('Registration error:', error);
       res.status(500).json({ error: 'Failed to register user' });
     }
   }
@@ -71,9 +85,10 @@ router.post(
     body('email').isEmail(),
     body('password').notEmpty(),
   ],
-  async (req: Request<{}, {}, LoginUserBody>, res: Response) => {
+  async (req: any, res: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.error('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -83,16 +98,19 @@ router.post(
       });
 
       if (!user) {
+        console.log('User not found:', req.body.email);
         return res.status(401).json({ error: 'Invalid credentials' });
       }
 
       const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
 
       if (!isPasswordValid) {
+        console.log('Invalid password for user:', req.body.email);
         return res.status(401).json({ error: 'Invalid credentials' });
       }
 
-      // TODO: Generate and return JWT token
+      const token = generateToken(user.id);
+
       const userData = {
         id: user.id,
         name: user.name,
@@ -100,58 +118,60 @@ router.post(
         role: user.role,
       };
 
-      res.json(userData);
+      res.json({
+        user: userData,
+        token,
+      });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to login' });
+      console.error('Login error:', error);
+      res.status(500).json({ error: 'Failed to login', details: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 );
 
-// Get user profile
-router.get(
-  '/profile/:id',
-  async (req: Request<{ id: string }>, res: Response) => {
-    try {
-      const user = await prisma.user.findUnique({
-        where: { id: req.params.id },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          role: true,
-          orders: {
-            include: {
-              items: {
-                include: {
-                  product: true,
-                },
+// Get current user
+router.get('/me', auth, async (req: any, res: any) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        orders: {
+          include: {
+            items: {
+              include: {
+                product: true,
               },
             },
           },
-          createdAt: true,
         },
-      });
+        createdAt: true,
+      },
+    });
 
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      res.json(user);
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch user profile' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch user profile' });
   }
-);
+});
 
 // Update user profile
 router.put(
-  '/profile/:id',
+  '/me',
+  auth,
   [
     body('name').optional().trim(),
     body('email').optional().isEmail(),
     body('password').optional().isLength({ min: 6 }),
   ],
-  async (req: Request<{ id: string }, {}, Partial<RegisterUserBody>>, res: Response) => {
+  async (req: any, res: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -164,7 +184,7 @@ router.put(
       }
 
       const user = await prisma.user.update({
-        where: { id: req.params.id },
+        where: { id: req.user.id },
         data: updateData,
         select: {
           id: true,
@@ -182,4 +202,9 @@ router.put(
   }
 );
 
-export default router; 
+// Logout user (optional - client-side token removal)
+router.post('/logout', auth, (_req: any, res: any) => {
+  res.json({ message: 'Logged out successfully' });
+});
+
+module.exports = router; 
