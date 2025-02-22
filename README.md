@@ -1,12 +1,12 @@
 # Trail Blazer - Mountain Bike E-commerce
 
-A modern e-commerce platform for mountain bikes and accessories, built with Next.js 14, TypeScript, Tailwind CSS, and PostgreSQL.
+A modern e-commerce platform for mountain bikes and accessories, built with Next.js 14, TypeScript, Tailwind CSS, and Supabase.
 
 ## Features
 
 - 🚲 Extensive catalog of mountain bikes and accessories
 - 🛒 Seamless shopping experience
-- 🔐 Secure user authentication
+- 🔐 Secure user authentication with Supabase Auth
 - 💳 Secure payment processing
 - 📱 Fully responsive design
 - 🎨 Modern, gritty, and bold aesthetic
@@ -21,9 +21,8 @@ A modern e-commerce platform for mountain bikes and accessories, built with Next
 
 - **Backend:**
   - Next.js API Routes
-  - Prisma ORM
-  - PostgreSQL
-  - NextAuth.js
+  - Supabase (Auth & Database)
+  - PostgreSQL (hosted by Supabase)
 
 ## Getting Started
 
@@ -42,20 +41,18 @@ A modern e-commerce platform for mountain bikes and accessories, built with Next
    ```bash
    cp .env.example .env
    ```
-   Then edit `.env` with your database credentials and other configuration.
-
-4. Set up the database:
-   ```bash
-   npx prisma generate
-   npx prisma db push
+   Then edit `.env` with your Supabase credentials:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=your-project-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
    ```
 
-5. Run the development server:
+4. Run the development server:
    ```bash
    npm run dev
    ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
@@ -65,8 +62,6 @@ A modern e-commerce platform for mountain bikes and accessories, built with Next
 │   ├── components/      # Reusable components
 │   ├── lib/            # Utility functions and configurations
 │   └── types/          # TypeScript type definitions
-├── prisma/
-│   └── schema.prisma   # Database schema
 ├── public/             # Static assets
 └── ...
 ```

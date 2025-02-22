@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { supabase } from '@/lib/supabase';
 
 interface User {
   id: string;
@@ -14,6 +15,7 @@ interface AuthState {
   isAuthenticated: boolean;
   setAuth: (user: User, token: string) => void;
   clearAuth: () => void;
+  checkAuth: () => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -28,12 +30,36 @@ export const useAuthStore = create<AuthState>()(
           token,
           isAuthenticated: true,
         }),
-      clearAuth: () =>
+      clearAuth: async () => {
+        await supabase.auth.signOut();
         set({
           user: null,
           token: null,
           isAuthenticated: false,
-        }),
+        });
+      },
+      checkAuth: async () => {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+          return;
+        }
+
+        set({
+          user: {
+            id: session.user.id,
+            email: session.user.email!,
+            name: session.user.user_metadata.name,
+            role: session.user.user_metadata.role,
+          },
+          token: session.access_token,
+          isAuthenticated: true,
+        });
+      },
     }),
     {
       name: 'auth-storage',
