@@ -14,6 +14,52 @@
   }
 }
 
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* border: 1px solid rgba(255, 255, 255, 0.18); */
+  }
+  
+  .glass-dark {
+    @apply transition-all duration-500;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    /* border: 1px solid rgba(255, 255, 255, 0.08); */
+  }
+
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    /* border: 1px solid rgba(255, 255, 255, 0.1); */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, #22c55e, #16a34a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .bento-grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, minmax(250px, auto));
+    }
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
