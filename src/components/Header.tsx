@@ -51,10 +51,9 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           <Link
             href="/"
-            className="text-2xl font-black tracking-tight text-white hover:text-green-400 transition-colors relative group"
+            className="text-2xl font-black tracking-tight text-white hover:text-green-500 transition-colors relative group"
           >
             Trail Blazer
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 transition-all duration-300 group-hover:w-full"></span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -66,7 +65,7 @@ export default function Header() {
                 className="relative group text-white hover:text-white/90 transition-colors"
               >
                 {item}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-400 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
           </nav>
@@ -101,20 +100,20 @@ export default function Header() {
                     <div className="py-2 px-1.5 space-y-1">
                       <Link
                         href="/profile"
-                        className="block px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-sm text-white hover:text-green-400"
+                        className="block px-4 py-2 mx-1 rounded-lg hover:bg-green-500/20 transition-colors text-sm text-white hover:text-green-400"
                       >
                         Profile
                       </Link>
                       <Link
                         href="/orders"
-                        className="block px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-sm text-white hover:text-green-400"
+                        className="block px-4 py-2 mx-1 rounded-lg hover:bg-green-500/20 transition-colors text-sm text-white hover:text-green-400"
                       >
                         Orders
                       </Link>
                       <div className="block mr-2">
                         <button 
                           onClick={handleLogout}
-                          className="w-full text-left px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-sm text-white hover:text-green-400"
+                          className="w-full text-left px-4 py-2 mx-1 rounded-lg hover:bg-green-500/20 transition-colors text-sm text-white hover:text-green-400"
                         >
                           <span className="w-fit">Sign out</span>
                         </button>
@@ -174,17 +173,17 @@ export default function Header() {
                 <>
                   <Link
                     href="/profile"
-                    className="px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-white hover:text-green-400"
+                    className="px-4 py-2 mx-1 rounded-lg hover:bg-green-500/20 transition-colors text-white hover:text-green-400"
                   >
                     Profile
                   </Link>
                   <Link
                     href="/orders"
-                    className="px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-white hover:text-green-400"
+                    className="px-4 py-2 mx-1 rounded-lg hover:bg-green-500/20 transition-colors text-white hover:text-green-400"
                   >
                     Orders
                   </Link>
-                  <div className="flex items-center justify-between px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors">
+                  <div className="flex items-center justify-between px-4 py-2 mx-1 rounded-lg hover:bg-green-500/20 transition-colors">
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-2 text-white hover:text-green-400 w-full"
@@ -197,7 +196,7 @@ export default function Header() {
               ) : (
                 <Link
                   href="/login"
-                  className="px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-white hover:text-green-400"
+                  className="px-4 py-2 mx-1 rounded-lg hover:bg-green-500/20 transition-colors text-white hover:text-green-400"
                 >
                   Login
                 </Link>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Search, Filter } from "lucide-react";
 import { useCartStore } from "@/lib/store/cartStore";
+import PartsAdvisor from '@/components/PartsAdvisor';
 
 const parts = [
   {
@@ -123,17 +124,8 @@ export default function PartsPage() {
     });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-green-800 text-white py-16">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Bike Parts & Components</h1>
-          <p className="text-lg text-green-100">
-            Premium components to upgrade your ride
-          </p>
-        </div>
-      </div>
-
+    <div className="min-h-screen bg-gray-50 py-8">
+      <PartsAdvisor />
       <div className="container mx-auto px-4 py-8">
         {/* Search and Filter Bar */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
