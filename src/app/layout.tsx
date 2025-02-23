@@ -1,14 +1,16 @@
+import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
+import PartsAdvisor from "@/components/PartsAdvisor";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Trail Blazer Bikes | Premium Mountain Bikes",
-  description: "Your one-stop shop for premium mountain bikes and accessories",
+export const metadata: Metadata = {
+  title: "Trail Blazer - Premium Mountain Bikes & Gear",
+  description: "Premium mountain bikes and gear for riders who push the limits",
 };
 
 export default function RootLayout({
@@ -26,6 +28,7 @@ export default function RootLayout({
           <main className="flex-grow">
             {children}
           </main>
+          <PartsAdvisor />
           <Footer />
         </AuthProvider>
       </body>

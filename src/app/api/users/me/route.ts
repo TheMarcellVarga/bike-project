@@ -1,40 +1,6 @@
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
-import { supabase } from '@/lib/supabase';
-
-interface SupabaseProduct {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  images: string[];
-}
-
-interface SupabaseOrderItem {
-  id: string;
-  quantity: number;
-  price: number;
-  product: SupabaseProduct;
-}
-
-interface SupabaseOrder {
-  id: string;
-  created_at: string;
-  status: string;
-  total_amount: number;
-  items: SupabaseOrderItem[];
-}
-
-interface SupabaseUser {
-  id: string;
-  email: string;
-  user_metadata: {
-    name: string;
-    role: string;
-  };
-  created_at: string;
-  orders: SupabaseOrder[];
-}
 
 interface UserResponse {
   id: string;
@@ -42,103 +8,94 @@ interface UserResponse {
   name: string;
   role: string;
   createdAt: string;
-  orders: {
-    id: string;
-    createdAt: string;
-    status: string;
-    totalAmount: number;
-    items: {
-      id: string;
-      quantity: number;
-      price: number;
-      product: {
-        id: string;
-        name: string;
-        description: string;
-        price: number;
-        image: string;
-      };
-    }[];
-  }[];
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const headersList = await headers();
-    const userId = headersList.get('x-user-id');
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set(name: string, value: string, options: any) {
+            cookieStore.set({ name, value, ...options });
+          },
+          remove(name: string, options: any) {
+            cookieStore.set({ name, value: '', ...options, maxAge: 0 });
+          },
+        },
+      }
+    );
 
-    if (!userId) {
+    // Get authenticated user data
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !user) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    // Get user data from Supabase
-    const { data: userData, error: userError } = await supabase
-      .from('users')
+    // Get user's profile data
+    let { data: profileData, error: profileError } = await supabase
+      .from('profiles')
       .select(`
         id,
         email,
-        user_metadata,
-        created_at,
-        orders (
-          id,
-          created_at,
-          status,
-          total_amount,
-          items (
-            id,
-            quantity,
-            price,
-            product (
-              id,
-              name,
-              description,
-              price,
-              images
-            )
-          )
-        )
+        name,
+        role,
+        created_at
       `)
-      .eq('id', userId)
+      .eq('id', user.id)
       .single();
 
-    if (userError || !userData) {
+    if (profileError) {
+      console.error('Profile fetch error:', profileError);
       return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
+        { error: 'Failed to fetch user profile' },
+        { status: 500 }
       );
     }
 
-    // Cast the data to our expected type
-    const user = userData as unknown as SupabaseUser;
+    if (!profileData) {
+      // If profile doesn't exist, create it
+      const { data: newProfile, error: createError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.name || '',
+            role: user.user_metadata?.role || 'USER',
+            created_at: user.created_at
+          }
+        ])
+        .select()
+        .single();
+
+      if (createError) {
+        console.error('Profile creation error:', createError);
+        return NextResponse.json(
+          { error: 'Failed to create user profile' },
+          { status: 500 }
+        );
+      }
+
+      profileData = newProfile;
+    }
 
     // Transform the data into the expected format
     const response: UserResponse = {
-      id: user.id,
-      email: user.email,
-      name: user.user_metadata?.name || '',
-      role: user.user_metadata?.role || 'USER',
-      createdAt: user.created_at,
-      orders: (user.orders || []).map(order => ({
-        id: order.id,
-        createdAt: order.created_at,
-        status: order.status,
-        totalAmount: order.total_amount,
-        items: (order.items || []).map(item => ({
-          id: item.id,
-          quantity: item.quantity,
-          price: item.price,
-          product: {
-            id: item.product.id,
-            name: item.product.name,
-            description: item.product.description,
-            price: item.product.price,
-            image: item.product.images[0] || ''
-          }
-        }))
-      }))
+      id: profileData.id,
+      email: profileData.email,
+      name: profileData.name,
+      role: profileData.role,
+      createdAt: profileData.created_at,
     };
 
     return NextResponse.json(response);

@@ -32,7 +32,16 @@ export async function POST(request: Request) {
 
     if (authError) throw authError
 
-    return NextResponse.json({ user: authData.user })
+    // Return both user data and session token
+    return NextResponse.json({
+      user: {
+        id: authData.user.id,
+        email: authData.user.email,
+        name: authData.user.user_metadata.name || '',
+        role: authData.user.user_metadata.role || 'USER',
+      },
+      token: authData.session?.access_token
+    })
     
   } catch (error) {
     return NextResponse.json(

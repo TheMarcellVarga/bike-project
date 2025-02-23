@@ -17,7 +17,7 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const router = useRouter();
-  const { token, user } = useAuthStore();
+  const { token } = useAuthStore();
 
   useEffect(() => {
     if (!token) {
@@ -27,11 +27,7 @@ export default function ProfilePage() {
 
     const fetchProfile = async () => {
       try {
-        const response = await fetch("/api/users/me", {
-          headers: {
-            "x-user-id": user?.id || "",
-          },
-        });
+        const response = await fetch("/api/users/me");
 
         if (!response.ok) {
           throw new Error("Failed to fetch profile");
@@ -47,7 +43,7 @@ export default function ProfilePage() {
     };
 
     fetchProfile();
-  }, [token, router, user]);
+  }, [token, router]);
 
   if (isLoading) {
     return (

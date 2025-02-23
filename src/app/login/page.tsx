@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const { setAuth, checkAuth } = useAuthStore();
   const redirectTo = searchParams.get('redirectTo') || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,7 +35,13 @@ export default function LoginPage() {
         throw new Error(data.error || "Failed to login");
       }
 
+      // Set the auth state
       setAuth(data.user, data.token);
+      
+      // Wait for the auth state to be properly updated
+      await checkAuth();
+      
+      // Then redirect
       router.push(redirectTo);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");

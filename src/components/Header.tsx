@@ -12,7 +12,7 @@ export default function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { items } = useCartStore();
-  const { user, isAuthenticated, clearAuth } = useAuthStore();
+  const { user, isAuthenticated, clearAuth, checkAuth } = useAuthStore();
   const router = useRouter();
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
@@ -26,16 +26,30 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/users/logout", {
+      // Close the user menu first to prevent UI glitches
+      setIsUserMenuOpen(false);
+      
+      // Clear the auth state first
+      clearAuth();
+      
+      // Then make the logout request
+      const response = await fetch("/api/users/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
       });
-      clearAuth();
+
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+
+      // Navigate after everything is done
       router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);
+      // Restore auth state if logout failed
+      await checkAuth();
     }
   };
 
