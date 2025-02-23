@@ -20,8 +20,8 @@ export default function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleLogout = async () => {
@@ -40,11 +40,11 @@ export default function Header() {
   };
 
   return (
-    <header 
+    <header
       className={`sticky top-0 inset-x-0 z-50 transition-all duration-500 shadow-transparent ${
-        isScrolled 
-          ? 'glass-dark backdrop-blur-xl bg-black/10' 
-          : 'bg-gradient-to-b from-black/70 via-black/30 to-transparent backdrop-blur-none'
+        isScrolled
+          ? "glass-dark backdrop-blur-xl bg-black/10"
+          : "bg-gradient-to-b from-black/70 via-black/30 to-transparent backdrop-blur-none"
       }`}
     >
       <div className="container mx-auto px-4 relative z-10">
@@ -59,7 +59,7 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {['Bikes', 'Parts', 'Accessories', 'About'].map((item) => (
+            {["Bikes", "Parts", "Accessories", "About"].map((item) => (
               <Link
                 key={item}
                 href={`/${item.toLowerCase()}`}
@@ -72,10 +72,7 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link 
-              href="/cart" 
-              className="relative group"
-            >
+            <Link href="/cart" className="relative group">
               <div className="p-2 rounded-xl hover:glass-dark transition-all duration-300">
                 <ShoppingCart className="h-6 w-6 text-white group-hover:text-green-400 transition-colors" />
                 {itemCount > 0 && (
@@ -94,37 +91,41 @@ export default function Header() {
                 >
                   <div className="p-2 rounded-xl hover:glass-dark transition-all duration-300 flex items-center space-x-2">
                     <User className="h-6 w-6 group-hover:text-green-400 transition-colors" />
-                    <span className="group-hover:text-green-400 transition-colors">{user?.name}</span>
+                    <span className="group-hover:text-green-400 transition-colors">
+                      {user?.name}
+                    </span>
                   </div>
                 </button>
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 glass-card rounded-xl shadow-2xl backdrop-blur-xl">
-                    <div className="py-1">
+                    <div className="py-2 px-1.5 space-y-1">
                       <Link
                         href="/profile"
-                        className="block px-4 py-2 text-sm text-white hover:text-green-400 transition-colors"
+                        className="block px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-sm text-white hover:text-green-400"
                       >
                         Profile
                       </Link>
                       <Link
                         href="/orders"
-                        className="block px-4 py-2 text-sm text-white hover:text-green-400 transition-colors"
+                        className="block px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-sm text-white hover:text-green-400"
                       >
                         Orders
                       </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-white hover:text-green-400 transition-colors"
-                      >
-                        Sign out
-                      </button>
+                      <div className="block mr-2">
+                        <button 
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-sm text-white hover:text-green-400"
+                        >
+                          <span className="w-fit">Sign out</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
             ) : (
-              <Link 
-                href="/login" 
+              <Link
+                href="/login"
                 className="p-2 rounded-xl text-white hover:glass-dark transition-all duration-300 hover:text-green-400"
               >
                 Login
@@ -148,8 +149,8 @@ export default function Header() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden py-4 glass-dark rounded-xl mt-2 backdrop-blur-xl">
-            <nav className="flex flex-col space-y-4 p-4">
-              {['Bikes', 'Parts', 'Accessories', 'About'].map((item) => (
+            <nav className="flex flex-col space-y-2 p-2">
+              {["Bikes", "Parts", "Accessories", "About"].map((item) => (
                 <Link
                   key={item}
                   href={`/${item.toLowerCase()}`}
@@ -158,7 +159,10 @@ export default function Header() {
                   {item}
                 </Link>
               ))}
-              <Link href="/cart" className="text-white hover:text-green-400 transition-colors flex items-center gap-2">
+              <Link
+                href="/cart"
+                className="text-white hover:text-green-400 transition-colors flex items-center gap-2"
+              >
                 Cart
                 {itemCount > 0 && (
                   <span className="bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -168,22 +172,33 @@ export default function Header() {
               </Link>
               {isAuthenticated ? (
                 <>
-                  <Link href="/profile" className="text-white hover:text-green-400 transition-colors">
+                  <Link
+                    href="/profile"
+                    className="px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-white hover:text-green-400"
+                  >
                     Profile
                   </Link>
-                  <Link href="/orders" className="text-white hover:text-green-400 transition-colors">
+                  <Link
+                    href="/orders"
+                    className="px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-white hover:text-green-400"
+                  >
                     Orders
                   </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-2 text-left text-white hover:text-green-400 transition-colors"
-                  >
-                    <LogOut className="h-5 w-5" />
-                    Sign out
-                  </button>
+                  <div className="flex items-center justify-between px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors">
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 text-white hover:text-green-400 w-full"
+                    >
+                      <LogOut className="h-5 w-5 ml-1" />
+                      <span className="mr-2">Sign out</span>
+                    </button>
+                  </div>
                 </>
               ) : (
-                <Link href="/login" className="text-white hover:text-green-400 transition-colors">
+                <Link
+                  href="/login"
+                  className="px-4 py-2 mx-1 rounded-lg hover:bg-green-400/20 transition-colors text-white hover:text-green-400"
+                >
                   Login
                 </Link>
               )}

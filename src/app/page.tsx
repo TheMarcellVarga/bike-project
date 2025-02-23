@@ -12,13 +12,13 @@ export default function Home() {
             src="/hero-bike.jpg"
             alt="Mountain biker on a trail"
             fill
-            className="object-cover brightness-95"
+            className="object-cover brightness-95 scale-x-[-1]"
             priority
             sizes="100vw"
             quality={100}
           />
           {/* Modern gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-bl from-black/50 via-black/30 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black to-transparent" />
           {/* Animated accent lines */}
           <div className="absolute inset-0 overflow-hidden">
@@ -29,10 +29,10 @@ export default function Home() {
         <div className="relative z-10 h-full flex items-center">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl">
-              <div className="glass-card p-8 rounded-2xl backdrop-blur-xl max-w-3xl">
+              <div className="p-8 rounded-2xl max-w-3xl">
                 <div className="mb-4">
                   <span className="text-green-400 font-bold text-xl uppercase tracking-wider">
-                    Welcome to the extreme
+                    Welcome to the republic
                   </span>
                 </div>
                 <h1 className="text-7xl md:text-8xl font-black mb-6 text-white leading-none tracking-tight">

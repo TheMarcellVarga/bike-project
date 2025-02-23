@@ -24,12 +24,13 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
-      setAuth: (user, token) =>
+      setAuth: (user, token) => {
         set({
           user,
           token,
           isAuthenticated: true,
-        }),
+        });
+      },
       clearAuth: async () => {
         await supabase.auth.signOut();
         set({
@@ -39,30 +40,41 @@ export const useAuthStore = create<AuthState>()(
         });
       },
       checkAuth: async () => {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error || !session) {
+        try {
+          const { data: { session }, error } = await supabase.auth.getSession();
+          
+          if (error || !session) {
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+            });
+            return;
+          }
+
+          set({
+            user: {
+              id: session.user.id,
+              email: session.user.email!,
+              name: session.user.user_metadata.name || '',
+              role: session.user.user_metadata.role || 'USER',
+            },
+            token: session.access_token,
+            isAuthenticated: true,
+          });
+        } catch (error) {
+          console.error('Error checking auth:', error);
           set({
             user: null,
             token: null,
             isAuthenticated: false,
           });
-          return;
         }
-
-        set({
-          user: {
-            id: session.user.id,
-            email: session.user.email!,
-            name: session.user.user_metadata.name,
-            role: session.user.user_metadata.role,
-          },
-          token: session.access_token,
-          isAuthenticated: true,
-        });
       },
     }),
     {
       name: 'auth-storage',
+      skipHydration: true, // Important: Let Supabase handle the initial hydration
     }
   )
 ); 
