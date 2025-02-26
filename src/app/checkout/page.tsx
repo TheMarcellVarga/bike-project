@@ -46,13 +46,51 @@ export default function CheckoutPage() {
     setIsLoading(true);
 
     try {
-      // TODO: Implement actual checkout logic with payment processing
-      // This is just a placeholder that simulates a successful checkout
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Prepare order data
+      const orderData = {
+        items: items.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+          name: item.name,
+          image: item.image
+        })),
+        shippingDetails,
+        total: getTotal()
+      };
+
+      console.log("Sending order data:", JSON.stringify(orderData, null, 2));
+
+      // Send order to API
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error("Order API error:", result);
+        let errorMessage = result.error || 'Failed to create order';
+        if (result.details) {
+          errorMessage += `: ${result.details}`;
+        }
+        if (result.code) {
+          errorMessage += ` (Code: ${result.code})`;
+        }
+        throw new Error(errorMessage);
+      }
+
+      console.log('Order created successfully:', result);
       
+      // Clear cart and redirect to orders page
       clearCart();
       router.push("/orders");
     } catch (err) {
+      console.error('Checkout error:', err);
       setError(err instanceof Error ? err.message : "Failed to process checkout");
     } finally {
       setIsLoading(false);
