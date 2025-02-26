@@ -16,7 +16,7 @@ export async function GET(request: Request) {
       : 'Not present';
     
     // Cookie info without using getAll() to avoid linter errors
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const sbAccessToken = cookieStore.get('sb-access-token');
     const sbRefreshToken = cookieStore.get('sb-refresh-token');
     
