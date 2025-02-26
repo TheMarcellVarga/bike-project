@@ -61,7 +61,6 @@ export default function AboutPage() {
             alt="Mountain biking trail"
             fill
             className="object-cover brightness-50"
-            priority
             sizes="100vw"
           />
         </div>
