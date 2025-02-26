@@ -14,13 +14,28 @@ export default function Header() {
   const { items } = useCartStore();
   const { user, isAuthenticated, clearAuth, checkAuth } = useAuthStore();
   const router = useRouter();
-  const itemCount = items.reduce((total, item) => total + item.quantity, 0);
+  
+  // Calculate item count only on client side to avoid hydration mismatch
+  const [itemCount, setItemCount] = useState(0);
+  
+  useEffect(() => {
+    // Update item count on client only
+    setItemCount(items.reduce((total, item) => total + item.quantity, 0));
+  }, [items]);
 
+  // Only run this effect on the client side to prevent hydration mismatches
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
+    
+    // Initial check
+    handleScroll();
+    
+    // Add event listener
     window.addEventListener("scroll", handleScroll);
+    
+    // Cleanup
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

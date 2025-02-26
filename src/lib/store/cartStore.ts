@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-import { persist, PersistOptions } from 'zustand/middleware';
-import { StateCreator } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export interface CartItem {
   id: string;
@@ -19,17 +18,12 @@ interface CartStore {
   getTotal: () => number;
 }
 
-type CartPersist = (
-  config: StateCreator<CartStore>,
-  options: PersistOptions<CartStore>
-) => StateCreator<CartStore>;
-
 export const useCartStore = create<CartStore>()(
-  (persist as CartPersist)(
+  persist(
     (set, get) => ({
       items: [],
       addItem: (item: Omit<CartItem, 'quantity'>) => {
-        set((state: CartStore) => {
+        set((state) => {
           const existingItem = state.items.find((i) => i.id === item.id);
           if (existingItem) {
             return {
@@ -46,12 +40,12 @@ export const useCartStore = create<CartStore>()(
         });
       },
       removeItem: (id: string) => {
-        set((state: CartStore) => ({
+        set((state) => ({
           items: state.items.filter((i) => i.id !== id),
         }));
       },
       updateQuantity: (id: string, quantity: number) => {
-        set((state: CartStore) => ({
+        set((state) => ({
           items: state.items.map((i) =>
             i.id === id ? { ...i, quantity } : i
           ),
@@ -70,6 +64,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'cart-storage',
+      skipHydration: true,
     }
   )
 ); 
