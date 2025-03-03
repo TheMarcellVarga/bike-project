@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
   try {
     const { name, email, password } = await request.json();
+    const cookieStore = await cookies();
 
     // Validation
     if (!name || !email || !password) {
@@ -19,6 +21,25 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Create a server-side Supabase client that can set cookies
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set(name: string, value: string, options: any) {
+            cookieStore.set({ name, value, ...options });
+          },
+          remove(name: string, options: any) {
+            cookieStore.set({ name, value: '', ...options, maxAge: 0 });
+          },
+        },
+      }
+    );
 
     // Register user with Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -46,7 +67,7 @@ export async function POST(request: Request) {
         name: authData.user?.user_metadata.name,
         role: authData.user?.user_metadata.role,
       },
-      session: authData.session
+      token: authData.session?.access_token
     }, { status: 201 });
 
   } catch (error) {

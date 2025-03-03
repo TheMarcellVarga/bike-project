@@ -41,17 +41,26 @@ export default function OrdersPage() {
       try {
         const response = await fetch("/api/users/me", {
           headers: {
-            "x-user-id": user?.id || "",
+            "Authorization": `Bearer ${token}`
           },
         });
 
         if (!response.ok) {
+          console.error("Failed to fetch orders:", response.status, response.statusText);
           throw new Error("Failed to fetch orders");
         }
 
         const data = await response.json();
-        setOrders(data.orders || []);
+        console.log("User profile data:", data);
+        
+        if (data.orders) {
+          setOrders(data.orders);
+        } else {
+          console.log("No orders found in profile data");
+          setOrders([]);
+        }
       } catch (err) {
+        console.error("Order fetch error:", err);
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setIsLoading(false);

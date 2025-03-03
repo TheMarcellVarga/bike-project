@@ -39,36 +39,39 @@ export const useAuthStore = create<AuthState>()(
         });
       },
       checkAuth: async () => {
-        try {
-          const { data: { session }, error } = await supabase.auth.getSession();
-          
-          if (error || !session) {
-            set({
-              user: null,
-              token: null,
-              isAuthenticated: false,
-            });
-            return;
-          }
-
+        // First check if there's a session
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
           set({
-            user: {
-              id: session.user.id,
-              email: session.user.email!,
-              name: session.user.user_metadata.name || '',
-              role: session.user.user_metadata.role || 'USER',
-            },
-            token: session.access_token,
-            isAuthenticated: true,
+            user: null,
+            token: null,
+            isAuthenticated: false,
           });
-        } catch (error) {
-          console.error('Error checking auth:', error);
+          return;
+        }
+        
+        // If there's a session, validate the user with getUser for security
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error || !user) {
           set({
             user: null,
             token: null,
             isAuthenticated: false,
           });
         }
+
+        set({
+          user: {
+            id: user.id,
+            email: user.email!,
+            name: user.user_metadata.name,
+            role: user.user_metadata.role,
+          },
+          token: session.access_token,
+          isAuthenticated: true,
+        });
       },
     }),
     {

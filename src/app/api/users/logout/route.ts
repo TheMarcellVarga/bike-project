@@ -23,16 +23,10 @@ export async function POST() {
       }
     );
 
-    const { error } = await supabase.auth.signOut();
+    // Sign out the user, which will clear the session
+    await supabase.auth.signOut();
 
-    if (error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({ message: 'Logged out successfully' });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Logout error:', error);
     return NextResponse.json(

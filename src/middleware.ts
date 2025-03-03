@@ -41,12 +41,24 @@ export async function middleware(request: NextRequest) {
       }
     );
 
-    // Check if user is authenticated
-    const { data: { session }, error } = await supabase.auth.getSession();
+    // Check for Authorization header (Bearer token)
+    const authHeader = request.headers.get('Authorization');
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      // Set the session with the token
+      await supabase.auth.setSession({
+        access_token: token,
+        refresh_token: '',
+      });
+    }
+    
+    // Use getUser() for better security
+    const { data: { user }, error } = await supabase.auth.getUser();
 
-    if (error || !session) {
+    if (error || !user) {
       // If it's an API route, return 401
       if (request.nextUrl.pathname.startsWith('/api/')) {
+        console.log('Auth failed for API route:', request.nextUrl.pathname);
         return NextResponse.json(
           { error: 'Authentication required' },
           { status: 401 }
@@ -54,6 +66,7 @@ export async function middleware(request: NextRequest) {
       }
       
       // If it's a page route, redirect to login
+      console.log('Redirecting to login:', request.nextUrl.pathname);
       const redirectUrl = new URL('/login', request.url);
       redirectUrl.searchParams.set('redirectTo', request.nextUrl.pathname);
       return NextResponse.redirect(redirectUrl);
@@ -61,7 +74,12 @@ export async function middleware(request: NextRequest) {
 
     // Add the user info to the request headers
     const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-user-id', session.user.id);
+    requestHeaders.set('x-user-id', user.id);
+    
+    // Preserve the Authorization header if it exists
+    if (authHeader) {
+      requestHeaders.set('Authorization', authHeader);
+    }
 
     // Return the response with the modified headers
     return NextResponse.next({
