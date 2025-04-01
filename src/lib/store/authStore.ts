@@ -39,40 +39,60 @@ export const useAuthStore = create<AuthState>()(
         });
       },
       checkAuth: async () => {
+        // Check if Supabase client is available
+        if (!supabase) {
+          console.warn('Supabase client not available. Authentication is disabled.');
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+          return;
+        }
+        
         // First check if there's a session
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) {
-          set({
-            user: null,
-            token: null,
-            isAuthenticated: false,
-          });
-          return;
-        }
-        
-        // If there's a session, validate the user with getUser for security
-        const { data: { user }, error } = await supabase.auth.getUser();
-        
-        if (error || !user) {
-          set({
-            user: null,
-            token: null,
-            isAuthenticated: false,
-          });
-          return;
-        }
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          
+          if (!session) {
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+            });
+            return;
+          }
+          
+          // If there's a session, validate the user with getUser for security
+          const { data: { user }, error } = await supabase.auth.getUser();
+          
+          if (error || !user) {
+            set({
+              user: null,
+              token: null,
+              isAuthenticated: false,
+            });
+            return;
+          }
 
-        set({
-          user: {
-            id: user.id,
-            email: user.email!,
-            name: user.user_metadata.name,
-            role: user.user_metadata.role,
-          },
-          token: session.access_token,
-          isAuthenticated: true,
-        });
+          set({
+            user: {
+              id: user.id,
+              email: user.email!,
+              name: user.user_metadata.name,
+              role: user.user_metadata.role,
+            },
+            token: session.access_token,
+            isAuthenticated: true,
+          });
+        } catch (error) {
+          console.error('Error checking authentication:', error);
+          set({
+            user: null,
+            token: null,
+            isAuthenticated: false,
+          });
+        }
       },
     }),
     {
