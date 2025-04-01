@@ -12,7 +12,7 @@ interface UserResponse {
   orders?: any[];
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     console.log('GET /api/users/me - Request received');
     

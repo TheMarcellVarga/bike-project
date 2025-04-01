@@ -60,6 +60,7 @@ export const useAuthStore = create<AuthState>()(
             token: null,
             isAuthenticated: false,
           });
+          return;
         }
 
         set({
