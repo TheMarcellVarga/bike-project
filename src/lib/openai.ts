@@ -1,12 +1,7 @@
 import OpenAI from 'openai';
 
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error('Missing OPENAI_API_KEY environment variable');
-}
-
-export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Create a conditional OpenAI client that will only be initialized if the API key exists
+let openaiInstance: OpenAI | null = null;
 
 // System prompt for the bike parts advisor
 export const SYSTEM_PROMPT = `You are an expert bike parts advisor helping customers find the perfect components for their bikes.
@@ -30,4 +25,13 @@ When making recommendations, include:
 - Product name and price
 - Key features and benefits
 - Compatibility information
-- Why it's suitable for their needs`; 
+- Why it's suitable for their needs`;
+
+// Only initialize if the API key is available
+if (process.env.OPENAI_API_KEY) {
+  openaiInstance = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+}
+
+export const openai = openaiInstance; 
