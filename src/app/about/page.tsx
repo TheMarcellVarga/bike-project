@@ -54,7 +54,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative h-[60vh] flex items-center justify-center">
+      <div className="relative h-[60vh] flex items-center justify-center pt-20">
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-bike.jpg"

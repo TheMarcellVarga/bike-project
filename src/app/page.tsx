@@ -136,8 +136,8 @@ export default function Home() {
 
 const categories = [
   {
-    name: "Mountain Bikes",
-    description: "Find your perfect trail companion",
+    name: "Mountain Bike",
+    description: "Find your aperfect trail companion",
     href: "/bikes",
     image: "/category-bikes.jpg",
   },

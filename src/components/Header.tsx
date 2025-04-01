@@ -70,9 +70,9 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 inset-x-0 z-50 transition-all duration-500 shadow-transparent ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 shadow-sm ${
         isScrolled
-          ? "glass-dark backdrop-blur-xl bg-black/10"
+          ? "glass-dark backdrop-blur-xl bg-black/10 border-b border-black/10"
           : "bg-gradient-to-b from-black/70 via-black/30 to-transparent backdrop-blur-none"
       }`}
     >

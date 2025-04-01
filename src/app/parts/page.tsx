@@ -128,7 +128,7 @@ export default function PartsPage() {
       <PartsAdvisor />
       
       {/* Header - Adding the green title banner to match other product pages */}
-      <div className="bg-green-800 text-white py-16 -mt-8">
+      <div className="bg-green-800 text-white py-16 pt-28 -mt-8">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold mb-4">Bike Parts</h1>
           <p className="text-lg text-green-100">
