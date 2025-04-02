@@ -26,7 +26,7 @@ export default function Header() {
   // Only run this effect on the client side to prevent hydration mismatches
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 10);
     };
     
     // Initial check
@@ -70,10 +70,10 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 shadow-sm ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-200 ease-in-out ${
         isScrolled
-          ? "glass-dark backdrop-blur-xl bg-black/10 border-b border-black/10"
-          : "bg-gradient-to-b from-black/70 via-black/30 to-transparent backdrop-blur-none"
+          ? "header-scrolled" 
+          : "header-top"
       }`}
     >
       <div className="container mx-auto px-4 relative z-10">

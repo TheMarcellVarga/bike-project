@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="space-y-0">
       {/* Hero Section */}
-      <section className="relative h-screen -mt-20">
+      <section className="relative h-screen">
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-bike.jpg"
